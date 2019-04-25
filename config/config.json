@@ -1,0 +1,18 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "crew-badges-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/crewBadges/CrewBadgesWebPart.js",
+          "manifest": "./src/webparts/crewBadges/CrewBadgesWebPart.manifest.json"
+        }
+      ]
+    }
+  },
+  "externals": {},
+  "localizedResources": {
+    "CrewBadgesWebPartStrings": "lib/webparts/crewBadges/loc/{locale}.js"
+  }
+}
