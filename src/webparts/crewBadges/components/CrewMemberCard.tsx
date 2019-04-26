@@ -11,6 +11,7 @@ import { Icon } from 'office-ui-fabric-react/lib/components/Icon';
 import { HoverCard, IPlainCardProps, HoverCardType } from 'office-ui-fabric-react/lib/HoverCard';
 import { DirectionalHint } from 'office-ui-fabric-react/lib/common/DirectionalHint';
 import { Stack } from 'office-ui-fabric-react/lib/Stack';
+import { Shimmer, ShimmerElementType, ShimmerElementsGroup } from 'office-ui-fabric-react/lib/Shimmer';
 import { ICrewBadge } from '../../../models/ICrewBadge';
 import { IBadgeStatus } from '../../../models/IBadgeStatus';
 
@@ -20,6 +21,8 @@ export default class CrewMemberCard extends React.Component<ICrewMemberCardProps
     super(props);
 
     this.state = {
+      isBadgeDataLoaded: false,
+      isPhotoLoaded: false,
       photo: null,
       statusBadges: [],
       progressBadges: [],
@@ -35,6 +38,7 @@ export default class CrewMemberCard extends React.Component<ICrewMemberCardProps
           if (error) {
             if (error.statusCode !== 404) {
               this.setState({
+                isBadgeDataLoaded: true,
                 error: error.message
               });
             }
@@ -45,6 +49,7 @@ export default class CrewMemberCard extends React.Component<ICrewMemberCardProps
           let progressBadges: ICrewBadge [] = badgeData.progressBadges;
 
           this.setState({
+            isBadgeDataLoaded: true,
             statusBadges: statusBadges,
             progressBadges: progressBadges
           });
@@ -57,6 +62,7 @@ export default class CrewMemberCard extends React.Component<ICrewMemberCardProps
           if (error) {
             if (error.statusCode !== 404) {
               this.setState({
+                isPhotoLoaded: true,
                 error: error.message
               });
             }
@@ -65,6 +71,7 @@ export default class CrewMemberCard extends React.Component<ICrewMemberCardProps
 
           const photoUrl = window.URL.createObjectURL(photoResponse);
           this.setState({
+            isPhotoLoaded: true,
             photo: photoUrl
           });
         });
@@ -80,13 +87,19 @@ export default class CrewMemberCard extends React.Component<ICrewMemberCardProps
       );
     } else if (user) {
       return (
-        <Persona className={ styles.crewMemberCard }
-            text={user.displayName}
-            secondaryText={user.jobTitle}
-            onRenderSecondaryText={this._onRenderSecondaryText}
-            onRenderTertiaryText={this._onRenderTertiaryText}
-            imageUrl={this.state.photo}
-            size={PersonaSize.size100} />
+        <Shimmer
+          className={ styles.crewMemberCard }
+          isDataLoaded={this.state.isBadgeDataLoaded && this.state.isPhotoLoaded}
+          width={660}
+          customElementsGroup={this._getCustomShimmerElements()}>
+          <Persona
+              text={user.displayName}
+              secondaryText={user.jobTitle}
+              onRenderSecondaryText={this._onRenderSecondaryText}
+              onRenderTertiaryText={this._onRenderTertiaryText}
+              imageUrl={this.state.photo}
+              size={PersonaSize.size100} />
+        </Shimmer>
       );
     }
 
@@ -234,5 +247,31 @@ export default class CrewMemberCard extends React.Component<ICrewMemberCardProps
     }
 
     return badgeStatus;
+  }
+
+  private _getCustomShimmerElements(): React.ReactElement<ICrewMemberCardProps> {
+    return (
+      <div style={{ display: 'flex' }}>
+        <ShimmerElementsGroup
+          shimmerElements={[
+            { type: ShimmerElementType.circle, width: 99, height: 99 },
+            { type: ShimmerElementType.gap, width: 17, height: 99 }
+          ]}/>
+        <ShimmerElementsGroup
+          flexWrap={true}
+          shimmerElements={[
+            { type: ShimmerElementType.line, width: 250, height: 21 },
+            { type: ShimmerElementType.gap, width: 294, height: 21 },
+            { type: ShimmerElementType.line, width: 250, height: 14 },
+            { type: ShimmerElementType.gap, width: 294, height: 14 },
+            { type: ShimmerElementType.circle, width: 33, height: 33,  },
+            { type: ShimmerElementType.gap, width: 4, height: 33 },
+            { type: ShimmerElementType.circle, width: 33, height: 33 },
+            { type: ShimmerElementType.gap, width: 4, height: 33 },
+            { type: ShimmerElementType.circle, width: 33, height: 33 },
+            { type: ShimmerElementType.gap, width: 437, height: 33 }
+          ]}/>
+      </div>
+    );
   }
 }
