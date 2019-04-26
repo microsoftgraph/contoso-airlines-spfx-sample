@@ -1,3 +1,6 @@
+import { MSGraphClient } from '@microsoft/sp-http';
+
 export interface ICrewBadgesProps {
-  description: string;
+  group: any;
+  graphClient: MSGraphClient;
 }

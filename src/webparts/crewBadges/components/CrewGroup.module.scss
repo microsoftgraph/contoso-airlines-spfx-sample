@@ -1,0 +1,9 @@
+@import '~office-ui-fabric-react/dist/sass/_References.scss';
+
+.crewGroup {
+  padding: 0 20px;
+
+  .groupName {
+    @include ms-font-su;
+  }
+}

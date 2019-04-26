@@ -6,6 +6,7 @@ import {
   IPropertyPaneConfiguration,
   PropertyPaneTextField
 } from '@microsoft/sp-property-pane';
+import { MSGraphClient } from '@microsoft/sp-http';
 
 import * as strings from 'CrewBadgesWebPartStrings';
 import CrewBadges from './components/CrewBadges';
@@ -18,14 +19,18 @@ export interface ICrewBadgesWebPartProps {
 export default class CrewBadgesWebPart extends BaseClientSideWebPart<ICrewBadgesWebPartProps> {
 
   public render(): void {
-    const element: React.ReactElement<ICrewBadgesProps > = React.createElement(
-      CrewBadges,
-      {
-        description: this.properties.description
-      }
-    );
+    this.context.msGraphClientFactory.getClient()
+      .then((client: MSGraphClient): void => {
+        const element: React.ReactElement<ICrewBadgesProps > = React.createElement(
+          CrewBadges,
+          {
+            group: this.context.pageContext.site.group,
+            graphClient: client
+          }
+        );
 
-    ReactDom.render(element, this.domElement);
+        ReactDom.render(element, this.domElement);
+      });
   }
 
   protected onDispose(): void {

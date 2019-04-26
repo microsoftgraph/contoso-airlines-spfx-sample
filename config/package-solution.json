@@ -3,8 +3,18 @@
   "solution": {
     "name": "crew-badges-client-side-solution",
     "id": "9af64baa-0857-48b0-9cab-eedba9c58ccd",
-    "version": "1.0.0.0",
+    "version": "1.0.0.1",
     "includeClientSideAssets": true,
+    "webApiPermissionRequests": [
+      {
+        "resource": "Microsoft Graph",
+        "scope": "User.Read.All"
+      },
+      {
+        "resource": "Microsoft Graph",
+        "scope": "Group.Read.All"
+      }
+    ],
     "skipFeatureDeployment": true,
     "isDomainIsolated": false
   },
