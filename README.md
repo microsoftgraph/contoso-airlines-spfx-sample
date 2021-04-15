@@ -2,7 +2,7 @@
 
 ## IMPORTANT
 
-**This sample has been archived and is no longer being maintained. For a more current sample using Microsoft Graph from ASP.NET Core, please see https://github.com/microsoftgraph/msgraph-training-spfx.**
+**This sample has been archived and is no longer being maintained. For a more current sample using Microsoft Graph from SPFX, please see https://github.com/microsoftgraph/msgraph-training-spfx.**
 
 This sample uses the SharePoint Framework and Microsoft Graph to build a visual display of the members of a flight crew and their "badge" status.
 
